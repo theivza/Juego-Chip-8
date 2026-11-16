@@ -1,0 +1,470 @@
+: jugador
+0b00111000
+0b01010000
+0b01111000
+0b11111100
+0b01111000
+0b01001000
+#6
+
+: enemigo1
+0b00111100
+0b01011010
+0b00111100
+0b01111110
+0b00111100
+0b00100100
+#6
+
+: enemigo2
+0b00111100
+0b01000010
+0b01100110
+0b11000011
+0b01111110
+0b00100100
+#6
+
+: espada
+0b00000111
+0b00001001
+0b00010001
+0b10100010
+0b01000100
+0b00101000
+0b01010000
+0b10001000
+#8
+
+: escudo
+0b00110000
+0b11001100
+0b10110100
+0b10110100
+0b10110100
+0b01001000
+0b01111000
+0b00110000
+#8
+
+: t
+0b11111000
+0b00100000
+0b00100000
+0b00100000
+0b00100000
+#5
+
+: k
+0b10010000
+0b10100000
+0b11000000
+0b10100000
+0b10010000
+#5
+
+: vida1
+0b01110111
+0b10001000
+0b10000000
+0b10000000
+0b01000001
+0b00100010
+0b00010100
+0b00001000
+#8
+
+: vida2
+0b00000001
+0b00000001
+0b00000001
+#3
+
+: borde1
+0b11111111
+0b11111111
+#2
+
+: borde2
+0b11000000
+
+: borde3
+0b11111100
+0b11111000
+0b11110000
+0b11100000
+0b11000000
+0b10000000
+#6
+
+: borde4
+0b11111100
+0b01111100
+0b00111100
+0b00011100
+0b00001100
+0b00000100
+#6
+
+
+
+:alias vx va
+:alias vy vb
+:alias accion v4
+:alias vidaJugador v5
+:alias vidaEnemigo v6
+:alias azar v7
+:alias ataqueJugador v8
+:alias ataqueEnemigo v9
+:alias defensaJugador vc
+:alias defensaEnemigo vd
+
+
+: pantalla
+i := borde1
+vx := 0
+vy := 0
+loop
+sprite vx vy 2
+vx += 8
+while vx != 64
+again
+
+vy := 31
+vx := 0
+loop
+sprite vx vy 1
+vx += 8
+while vx != 64
+again
+
+i := borde2
+vx := 0
+vy := 2
+loop
+sprite vx vy 1
+vy += 1
+while vy != 31
+again
+
+vx := 62
+vy := 2
+loop
+sprite vx vy 1
+vy += 1
+while vy != 31
+again
+
+i := borde3
+vx := 2
+vy := 2
+sprite vx vy 6
+
+i := borde4
+vx := 56
+vy := 2
+sprite vx vy 6
+;
+
+: acciones
+v1 := 1
+i := hex v1
+vx := 2
+vy := 27
+sprite vx vy 5
+v1 := 10
+i := hex v1
+vx += 8
+sprite vx vy 5
+i := t
+vx += 6
+sprite vx vy 5
+i := k
+vx += 6
+sprite vx vy 5
+
+v1 := 2
+i := hex v1
+vx := 38
+sprite vx vy 5
+vx += 8
+v1 := 13
+i := hex v1
+sprite vx vy 5
+vx += 6
+v1 := 14
+i := hex v1
+sprite vx vy 5
+vx += 6
+v1 := 15
+i := hex v1
+sprite vx vy 5
+;
+
+: Djugador
+vx := 2
+vy := 1
+i := jugador
+sprite vx vy 6
+;
+
+: Denemigo
+vx := 55
+vy := 1
+i := enemigo1
+sprite vx vy 6
+;
+
+: digits 0 0 0
+
+: numeros
+v3 := 9
+v3 -= v0
+i := digits
+bcd v0
+
+i := digits
+load v2
+
+if vf == 0 begin
+i := hex v1
+sprite vx vy 5
+end
+vx += 6
+
+i := hex v2
+sprite vx vy 5
+;
+
+: Dcorazon
+i := vida1
+vx := 28
+vy := 0
+sprite vx vy 8
+i := vida2
+vx := 29
+vy := 1
+sprite vx vy 3
+;
+
+: stop
+	loop
+		vf := delay
+		if vf != 0 then
+	again
+;
+
+: temp 0
+
+: accionAtaque
+
+vx := 6
+vy := 14
+v0 := ataqueJugador
+numeros
+
+vx := 2
+vy := 13
+i := espada
+sprite vx vy 8
+
+if azar == 0 begin
+vf := 60
+delay := vf
+stop
+vx := 54
+i := escudo
+sprite vx vy 8
+
+vx := 41
+vy := 14
+v0 := defensaEnemigo
+numeros
+
+vf := 60
+delay := vf
+stop
+vx := 6
+vy := 14
+v0 := ataqueJugador
+numeros
+
+v0 := ataqueJugador
+vx := 6
+v0 -= defensaEnemigo
+i := temp
+save v0
+numeros
+
+else
+v0 := ataqueJugador
+i := temp
+save v0
+end
+
+vf := 60
+delay := vf
+stop
+vx := 43
+vy := 1
+v0 := vidaEnemigo
+numeros
+i := temp
+load v0
+vidaEnemigo -= v0
+
+if vf == 0 begin
+vidaEnemigo := 0
+end
+
+vx := 43
+v0 := vidaEnemigo
+numeros
+;
+
+: accionEnemigo
+
+vx := 41
+vy := 14
+v0 := ataqueEnemigo
+numeros
+
+vx := 54
+vy := 13
+i := espada
+sprite vx vy 8
+
+if accion == 2 begin
+vf := 60
+delay := vf
+stop
+vx := 2
+i := escudo
+sprite vx vy 8
+
+vx := 6
+vy := 14
+v0 := defensaJugador
+numeros
+
+vf := 60
+delay := vf
+stop
+vx := 41
+vy := 14
+v0  := ataqueEnemigo
+numeros
+
+v0 := ataqueEnemigo
+vx := 41
+v0 -= defensaJugador
+i := temp
+save v0
+numeros
+
+else
+v0 := ataqueEnemigo
+i := temp
+save v0
+end
+
+vf := 60
+delay := vf
+stop
+vx := 11
+vy := 1
+v0 := vidaJugador
+numeros
+i := temp
+load v0
+vidaJugador -= v0
+
+if vf == 0 begin
+vidaJugador := 0
+end
+
+vx := 11
+v0 :=  vidaJugador
+numeros
+;
+
+: dobleDefensa
+vx := 2
+vy := 13
+i := escudo
+sprite vx vy 8
+vx := 54
+sprite vx vy 8
+;
+
+: refrescar
+acciones
+Djugador
+Denemigo
+vx := 11
+vy := 1
+v0 := vidaJugador
+numeros
+vx := 43
+v0 := vidaEnemigo
+numeros
+Dcorazon
+;
+
+: victory
+clear
+pantalla
+v2 := key
+loop
+if v2 == 3 then accion := 3
+while accion != 3
+again
+;
+
+: main
+vidaJugador := 10
+vidaEnemigo := 8
+accion := 0
+ataqueJugador := 3
+ataqueEnemigo := 2
+defensaJugador := 1
+defensaEnemigo := 2
+
+loop
+accion := 0
+clear
+refrescar
+
+loop
+v2 := key
+if v2 == 1 then accion := 1 
+if v2 == 2 then accion := 2 
+while v2 == 0 
+again
+#accion
+#1 ataque
+#2 defensa
+#azar
+#0 defensa
+#1 ataque
+
+if accion == 1 begin
+azar := random 1
+accionAtaque
+end
+
+if vidaEnemigo != 0 begin 
+if accion == 2 then azar := random 1
+if azar == 1 then accionEnemigo
+else
+victory
+end
+
+if azar == 0 then if accion == 2 begin
+dobleDefensa
+end
+
+vf := 120
+delay := vf
+stop
+again
