@@ -14,15 +14,15 @@ Desarrollo de un videojuego para CHIP-8 utilizando Octo como lenguaje de program
 - Gráficos diseñados para la resolución de CHIP-8 (64 x 32).
 - Pantalla de inicio, victoria y derrota.
 - Sistema de combate por turnos.
-- Dos acciones disponibles: ataque y defensa.
-- Acciones enemigas aleatorias
-- Sistema de puntos de vida.
-- Cinco enemigos.
+  - Dos acciones disponibles: ataque y defensa.
+  - Acciones enemigas aleatorias.
+  - Sistema de puntos de vida.
+  - Cinco enemigos.
 
 ## Recursos y fuentes
 
 **[Octo](https://johnearnest.github.io/Octo/ )** Entorno de desarrollo utilizado para programar, compilar y realizar pruebas del videojuego.
 
-**CHIP-8** Máquina virtual para la cual desarrolle el juego.
+**CHIP-8** Máquina virtual para la cual desarrollé el juego.
 
 **[Documentación](https://github.com/JohnEarnest/Octo/tree/gh-pages/docs)** Documentación utilizada como material de referencia y aprendizaje.
